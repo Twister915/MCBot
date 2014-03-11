@@ -3,7 +3,7 @@ package org.projectbot.mcprotocollib.packets;
 import org.projectbot.util.Location;
 import org.spacehq.mc.protocol.packet.ingame.client.entity.player.ClientPlayerMovementPacket;
 
-public class MCPMovePacket extends ClientPlayerMovementPacket {
+public final class MCPMovePacket extends ClientPlayerMovementPacket {
     private MCPMovePacket() {}
     public static MCPMovePacket movePacket(Location location, Location oldLocation) {
         MCPMovePacket mcpMovePacket = new MCPMovePacket();

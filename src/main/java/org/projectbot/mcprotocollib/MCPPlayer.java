@@ -4,10 +4,15 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.projectbot.inter.Player;
+import org.projectbot.inter.PlayerAttachment;
 import org.projectbot.mcprotocollib.packets.MCPMovePacket;
 import org.projectbot.util.Location;
 import org.spacehq.mc.protocol.packet.ingame.client.ClientChatPacket;
+import org.spacehq.mc.protocol.packet.ingame.client.ClientRequestPacket;
 import org.spacehq.packetlib.Client;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public final class MCPPlayer implements Player {
@@ -15,6 +20,8 @@ public final class MCPPlayer implements Player {
     private final MCPAccount account;
     private final String username;
     private final String UUID;
+
+    private final List<PlayerAttachment> attachments = new ArrayList<>();
 
     /*
      Player
@@ -52,5 +59,25 @@ public final class MCPPlayer implements Player {
     @Override
     public void switchSlot(Integer slot) {
 
+    }
+
+    @Override
+    public void openInventory() {
+        getMcpClient().getSession().send(new ClientRequestPacket(ClientRequestPacket.Request.OPEN_INVENTORY_ACHIEVEMENT));
+    }
+
+    @Override
+    public void respawn() {
+        getMcpClient().getSession().send(new ClientRequestPacket(ClientRequestPacket.Request.RESPAWN));
+    }
+
+    @Override
+    public void addAttachment(PlayerAttachment attachment) {
+        this.attachments.add(attachment);
+    }
+
+    @Override
+    public void removeAttachment(PlayerAttachment attachment) {
+        this.attachments.remove(attachment);
     }
 }

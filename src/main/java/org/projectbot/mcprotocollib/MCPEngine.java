@@ -6,14 +6,19 @@ import org.projectbot.inter.*;
 @EngineMeta(
         name = "MCProtocolLib",
         defaultEngine = true,
-        engineAuthor = "org.spacehq"
+        engineAuthor = "Steveice10"
 )
 @Data
 public final class MCPEngine implements Engine {
     private final EngineMeta meta;
     @Override
     public Account getAccount(String username, String password) {
-        return new MCPAccount(username, password);
+        return new MCPAccount(username, password, false);
+    }
+
+    @Override
+    public Account getAccount(String username) {
+        return new MCPAccount(username, null, true);
     }
 
     @Override

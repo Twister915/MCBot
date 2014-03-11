@@ -7,4 +7,5 @@ import org.projectbot.inter.Account;
 public final class MCPAccount implements Account  {
     private final String login;
     private final String password;
+    private final boolean offline;
 }

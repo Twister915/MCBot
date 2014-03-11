@@ -32,21 +32,23 @@ public final class MCPConnection implements Connection {
     @Override
     public Player connect() throws ConnectException {
         try {
-            protocol = new MinecraftProtocol(account.getLogin(), account.getPassword(), false);
+            if (!account.isOffline())protocol = new MinecraftProtocol(account.getLogin(), account.getPassword(), false);
+            else protocol = new MinecraftProtocol(account.getLogin());
         } catch (AuthenticationException e) {
             throw new ConnectException("Could not login with account provided!", ConnectException.Cause.ACCOUNT_INVALID);
         }
         client = new Client(server.getAddress(), server.getPort(), protocol, new TcpSessionFactory());
         Session session = client.getSession();
         session.addListener(new MCPConnectionClientListener(this));
-        MCPConnectionThread mcpConnectionThread = new MCPConnectionThread(this);
-        mcpConnectionThread.start();
-        while (mcpConnectionThread.getPlayer() == null) try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        this.currentConnection = new MCPPlayer(this, getAccount(), getAccount().getLogin(), null, getClient());
+        getClient().getSession().connect();
+        while (!this.isJoinedServer()) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        this.currentConnection = mcpConnectionThread.getPlayer();
         return this.currentConnection;
     }
 
