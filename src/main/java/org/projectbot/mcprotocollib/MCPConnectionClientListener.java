@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.projectbot.inter.PlayerAttachment;
 import org.projectbot.util.Location;
+import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerDisconnectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityStatusPacket;
@@ -31,7 +32,7 @@ public final class MCPConnectionClientListener extends SessionAdapter {
                     (double) serverSpawnPositionPacket.getX(),
                     (double) serverSpawnPositionPacket.getY(),
                     (double) serverSpawnPositionPacket.getZ(),
-                    null, null));
+                    0f, 0f));
         }
         if (packet1 instanceof ServerDisconnectPacket) {
             ServerDisconnectPacket packet = (ServerDisconnectPacket) packet1;
@@ -45,6 +46,9 @@ public final class MCPConnectionClientListener extends SessionAdapter {
                     playerAttachment.onPlayerDeath(currentConnection);
                 }
             }
+        }
+        if (packet1 instanceof ServerChatPacket) {
+            //System.out.println("Chat packet for " + connection.getCurrentConnection().getAccount().getLogin() + ":" + ((ServerChatPacket) packet1).getMessage());
         }
     }
 }

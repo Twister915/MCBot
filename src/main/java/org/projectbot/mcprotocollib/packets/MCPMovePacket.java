@@ -2,11 +2,14 @@ package org.projectbot.mcprotocollib.packets;
 
 import org.projectbot.util.Location;
 import org.spacehq.mc.protocol.packet.ingame.client.entity.player.ClientPlayerMovementPacket;
+import sun.plugin.dom.exception.InvalidStateException;
 
 public final class MCPMovePacket extends ClientPlayerMovementPacket {
     private MCPMovePacket() {}
     public static MCPMovePacket movePacket(Location location, Location oldLocation) {
         MCPMovePacket mcpMovePacket = new MCPMovePacket();
+        if (location == null) throw new InvalidStateException("You are a tigga!");
+        if (oldLocation == null) throw new InvalidStateException("You are a super tigga!");
         if (!oldLocation.getPitch().equals(location.getPitch()) || !oldLocation.getYaw().equals(location.getYaw())) {
             //Must do a rotate packet
             mcpMovePacket.rot = true;
