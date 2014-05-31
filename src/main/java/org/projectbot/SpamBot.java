@@ -42,7 +42,15 @@ public class SpamBot
         this.ip = ip;
 
 
-        this.song = "Yo waddup!_I got swag\n".split("\n");
+        String song = "Oh, say can you see by the dawn's early light\n" +
+                "What so proudly we hailed at the twilight's last gleaming?\n" +
+                "Whose broad stripes and bright stars thru the perilous fight,\n" +
+                "O'er the ramparts we watched were so gallantly streaming?\n" +
+                "And the rocket's red glare, the bombs bursting in air,\n" +
+                "Gave proof through the night that our flag was still there.\n" +
+                "Oh, say does that star-spangled banner yet wave\n" +
+                "O'er the land of the free and the home of the brave?";
+        this.song = song.split("\n");
     }
 
     private static String alts = "slayerzoomba@gmail.com:chasel123\nvikram901:nautica\nzoro2011@live.ca:wwe123\nbbstar5613@gmail.com:pierce04\nTheTechPony@yahoo.com:freemcaccount1\ncoolmasterkane:63sen1\ntemperrre@gmail.com:isaiah123\npokemonbeastincod@gmail.com:firefox1234\nlausteven39@hotmail.se:steven123\npdsterling@comcast.net:PdsterlingcreatorofSuperDev\nMadsmotor100:23260427\nkq1003@gmail.com:kaiquander1003\nMakyMeje:12345t\nmatemate999@gmail.com:mate123\nApplehuman:maasikas\nJiSkAvH:hyvess123\nS1L3N7123@GMAIL.COM:dejesus2003\njude.cresswell@btinternet.com:trains123412\nUndeadxIdiot07:christos714\n";
@@ -161,7 +169,7 @@ public class SpamBot
                         }
                         try {
                             if (this.spamBot.shouldStartSpamming) {
-                                player.chat(this.spamBot.getMessage().replaceAll("%r", String.valueOf(this.spamBot.getRandom().nextInt(10000))));
+                                player.chat(this.spamBot.getMessage().replaceAll("%r", String.valueOf(this.spamBot.getRandom().nextInt(1000))));
                             }
                         } catch (IllegalStateException ex) {
                             ex.printStackTrace();
