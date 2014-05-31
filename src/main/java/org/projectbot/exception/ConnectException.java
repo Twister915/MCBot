@@ -11,6 +11,6 @@ public class ConnectException extends Exception {
     public static enum Cause {
         NETWORK,
         ACCOUNT_INVALID,
-        SERVER_INVALID;
+        SERVER_INVALID
     }
 }
