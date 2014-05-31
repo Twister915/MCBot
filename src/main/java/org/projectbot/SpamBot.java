@@ -163,7 +163,7 @@ public class SpamBot
                     }
                     while ((this.spamBot.isRunning()) && (connection.isConnected())) {
                         try {
-                            Thread.sleep(2000L);
+                            Thread.sleep(1000L);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
