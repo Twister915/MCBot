@@ -28,7 +28,7 @@
     </dependencies>
 
 
-             <build>
+    <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
@@ -40,7 +40,19 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>org.projectbot.ProjectBot</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-         
+
 </project>
