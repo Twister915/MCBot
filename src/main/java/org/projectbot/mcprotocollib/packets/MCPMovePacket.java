@@ -1,7 +1,7 @@
 package org.projectbot.mcprotocollib.packets;
 
 import org.projectbot.util.Location;
-import org.spacehq.mc.protocol.packet.ingame.client.entity.player.ClientPlayerMovementPacket;
+import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerMovementPacket;
 import sun.plugin.dom.exception.InvalidStateException;
 
 public final class MCPMovePacket extends ClientPlayerMovementPacket {

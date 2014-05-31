@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.Setter;
 import org.projectbot.inter.Player;
 import org.projectbot.inter.PlayerAttachment;
-import org.projectbot.mcprotocollib.packets.MCPMovePacket;
 import org.projectbot.util.Location;
 import org.spacehq.mc.protocol.packet.ingame.client.ClientChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.client.ClientRequestPacket;
-import org.spacehq.mc.protocol.packet.ingame.client.entity.player.ClientPlayerPositionRotationPacket;
+import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerPositionRotationPacket;
 import org.spacehq.packetlib.Client;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public final class MCPPlayer implements Player {
     @Override
     public void move(Location location) {
         validateSendPacket();
-        getMcpClient().getSession().send(new ClientPlayerPositionRotationPacket(true, location.getX(), location.getY(), location.getY()+1.0, location.getZ(), location.getYaw(), location.getPitch()));
+        getMcpClient().getSession().send(new ClientPlayerPositionRotationPacket(true, location.getX(), location.getY(), location.getY() + 1.0, location.getZ(), location.getYaw(), location.getPitch()));
         this.location = location;
     }
 

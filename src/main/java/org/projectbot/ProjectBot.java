@@ -24,13 +24,13 @@ public final class ProjectBot {
         /*
         Test implementation here.
          */
-        Test test = new Test(args[0]);
-        test.start();
+        SpamBot spamBot = new SpamBot(args[0]);
+        spamBot.start();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String s = scanner.nextLine();
-            if (s.equalsIgnoreCase("start")) test.setShouldStartSpamming(true);
-            if (s.equalsIgnoreCase("pause")) test.setShouldStartSpamming(false);
+            if (s.equalsIgnoreCase("start")) spamBot.setShouldStartSpamming(true);
+            if (s.equalsIgnoreCase("pause")) spamBot.setShouldStartSpamming(false);
         }
     }
 }
