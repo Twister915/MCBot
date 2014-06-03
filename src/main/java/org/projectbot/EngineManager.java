@@ -23,7 +23,9 @@ public final class EngineManager {
     }
 
     public Engine getEngine() {
-        if (engines.size() != 1) throw new IllegalStateException("Only one engine can be registered for this method to work!");
+        if (engines.size() != 1) {
+            throw new IllegalStateException("Only one engine can be registered for this method to work!");
+        }
         return this.engines.get(0);
     }
 

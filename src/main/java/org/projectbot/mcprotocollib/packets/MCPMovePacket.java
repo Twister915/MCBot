@@ -4,7 +4,9 @@ import org.projectbot.util.Location;
 import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerMovementPacket;
 
 public final class MCPMovePacket extends ClientPlayerMovementPacket {
-    private MCPMovePacket() {}
+    private MCPMovePacket() {
+    }
+
     public static MCPMovePacket movePacket(Location location, Location oldLocation) {
         MCPMovePacket mcpMovePacket = new MCPMovePacket();
         if (location == null) throw new IllegalStateException("You are a tigga!");

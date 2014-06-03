@@ -40,7 +40,7 @@ public final class MCPConnectionClientListener extends SessionAdapter {
             connection.forciblyClosed();
         }
         if (packet1 instanceof ServerEntityStatusPacket) {
-            ServerEntityStatusPacket packet = (ServerEntityStatusPacket)packet1;
+            ServerEntityStatusPacket packet = (ServerEntityStatusPacket) packet1;
             if (!(packet.getEntityId() == currentConnection.getEntityId() && packet.getStatus() == ServerEntityStatusPacket.Status.DEAD)) {
                 for (PlayerAttachment playerAttachment : currentConnection.getAttachments()) {
                     playerAttachment.onPlayerDeath(currentConnection);

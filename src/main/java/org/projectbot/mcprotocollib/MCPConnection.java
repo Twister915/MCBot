@@ -32,8 +32,11 @@ public final class MCPConnection implements Connection {
     @Override
     public Player connect() throws ConnectException {
         try {
-            if (!account.isOffline())protocol = new MinecraftProtocol(account.getLogin(), account.getPassword(), false);
-            else protocol = new MinecraftProtocol(account.getLogin());
+            if (!account.isOffline()) {
+                protocol = new MinecraftProtocol(account.getLogin(), account.getPassword(), false);
+            } else {
+                protocol = new MinecraftProtocol(account.getLogin());
+            }
         } catch (AuthenticationException e) {
             throw new ConnectException("Could not login with account provided!", ConnectException.Cause.ACCOUNT_INVALID);
         }

@@ -9,7 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface EngineMeta {
     String name();
+
     String implementor() default "GaiusCodez";
+
     String engineAuthor();
+
     boolean defaultEngine() default false;
 }

@@ -1,144 +1,55 @@
 package org.projectbot;
 
-import java.beans.ConstructorProperties;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.projectbot.exception.ConnectException;
+import org.projectbot.inter.*;
+import org.projectbot.util.FileUtil;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
-import org.projectbot.exception.ConnectException;
-import org.projectbot.inter.Account;
-import org.projectbot.inter.Connection;
-import org.projectbot.inter.Engine;
-import org.projectbot.inter.Player;
-import org.projectbot.inter.PlayerAttachment;
-import org.projectbot.inter.Server;
-
-public class SpamBot
-        extends Thread {
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class SpamBot extends Thread {
     private volatile boolean running;
-    private final Random random;
-    private boolean shouldStartSpamming;
-    private int index;
-    private final String[] song;
-    String ip;
-
-    public boolean isRunning() {
-        return this.running;
-    }
-
-    public Random getRandom() {
-        return this.random;
-    }
-
-    public void setShouldStartSpamming(boolean shouldStartSpamming) {
-        this.shouldStartSpamming = shouldStartSpamming;
-    }
-
-    public SpamBot(String ip) {
-        this.random = new Random();
-        this.shouldStartSpamming = false;
-        this.index = 0;
-        this.ip = ip;
-
-
-        String song = "Oh, say can you see by the dawn's early light\n" +
-                "What so proudly we hailed at the twilight's last gleaming?\n" +
-                "Whose broad stripes and bright stars thru the perilous fight,\n" +
-                "O'er the ramparts we watched were so gallantly streaming?\n" +
-                "And the rocket's red glare, the bombs bursting in air,\n" +
-                "Gave proof through the night that our flag was still there.\n" +
-                "Oh, say does that star-spangled banner yet wave\n" +
-                "O'er the land of the free and the home of the brave?";
-        this.song = song.split("\n");
-    }
-
-    private static String alts = "slayerzoomba@gmail.com:chasel123\nvikram901:nautica\nzoro2011@live.ca:wwe123\nbbstar5613@gmail.com:pierce04\nTheTechPony@yahoo.com:freemcaccount1\ncoolmasterkane:63sen1\ntemperrre@gmail.com:isaiah123\npokemonbeastincod@gmail.com:firefox1234\nlausteven39@hotmail.se:steven123\npdsterling@comcast.net:PdsterlingcreatorofSuperDev\nMadsmotor100:23260427\nkq1003@gmail.com:kaiquander1003\nMakyMeje:12345t\nmatemate999@gmail.com:mate123\nApplehuman:maasikas\nJiSkAvH:hyvess123\nS1L3N7123@GMAIL.COM:dejesus2003\njude.cresswell@btinternet.com:trains123412\nUndeadxIdiot07:christos714\n";
+    private boolean shouldStartSpamming = false;
+    private int index = 0;
+    private final String[] lines;
+    private String alts = "slayerzoomba@gmail.com:chasel123\nvikram901:nautica\nzoro2011@live.ca:wwe123\nbbstar5613@gmail.com:pierce04\nTheTechPony@yahoo.com:freemcaccount1\ncoolmasterkane:63sen1\ntemperrre@gmail.com:isaiah123\npokemonbeastincod@gmail.com:firefox1234\nlausteven39@hotmail.se:steven123\npdsterling@comcast.net:PdsterlingcreatorofSuperDev\nMadsmotor100:23260427\nkq1003@gmail.com:kaiquander1003\nMakyMeje:12345t\nmatemate999@gmail.com:mate123\nApplehuman:maasikas\nJiSkAvH:hyvess123\nS1L3N7123@GMAIL.COM:dejesus2003\njude.cresswell@btinternet.com:trains123412\nUndeadxIdiot07:christos714\n";
     private List<BotThread> threads;
+    private String ip;
+    private int port;
 
-    private static class BotThread
-            extends Thread {
+    public SpamBot(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
+
+        String line = null;
+        String altLine = null;
+        try {
+            line = FileUtil.getFileLines("lines.txt");
+            altLine = FileUtil.getFileLines("alts.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (line == null || altLine == null) {
+            System.out.println("Failed to load text from either lines.txt or alts.txt, exiting.");
+            System.exit(0);
+        }
+        this.lines = line.split("\n");
+        this.alts = altLine;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    private class BotThread extends Thread {
         private final Engine engine;
         private final Account account;
         private final Server server;
         private final SpamBot spamBot;
-
-        public boolean equals(Object o) {
-            if (o == this) {
-                return true;
-            }
-            if (!(o instanceof BotThread)) {
-                return false;
-            }
-            BotThread other = (BotThread) o;
-            if (!other.canEqual(this)) {
-                return false;
-            }
-            Object this$engine = getEngine();
-            Object other$engine = other.getEngine();
-            if (this$engine == null ? other$engine != null : !this$engine.equals(other$engine)) {
-                return false;
-            }
-            Object this$account = getAccount();
-            Object other$account = other.getAccount();
-            if (this$account == null ? other$account != null : !this$account.equals(other$account)) {
-                return false;
-            }
-            Object this$server = getServer();
-            Object other$server = other.getServer();
-            if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
-                return false;
-            }
-            Object this$test = getSpamBot();
-            Object other$test = other.getSpamBot();
-            return this$test == null ? other$test == null : this$test.equals(other$test);
-        }
-
-        public boolean canEqual(Object other) {
-            return other instanceof BotThread;
-        }
-
-        public int hashCode() {
-            int PRIME = 59;
-            int result = 1;
-            Object $engine = getEngine();
-            result = result * 59 + ($engine == null ? 0 : $engine.hashCode());
-            Object $account = getAccount();
-            result = result * 59 + ($account == null ? 0 : $account.hashCode());
-            Object $server = getServer();
-            result = result * 59 + ($server == null ? 0 : $server.hashCode());
-            Object $test = getSpamBot();
-            result = result * 59 + ($test == null ? 0 : $test.hashCode());
-            return result;
-        }
-
-        @ConstructorProperties({"engine", "account", "server", "test"})
-        public BotThread(Engine engine, Account account, Server server, SpamBot spamBot) {
-            this.engine = engine;
-            this.account = account;
-            this.server = server;
-            this.spamBot = spamBot;
-        }
-
-        public String toString() {
-            return "Test.BotThread(engine=" + getEngine() + ", account=" + getAccount() + ", server=" + getServer() + ", test=" + getSpamBot() + ")";
-        }
-
-        public Engine getEngine() {
-            return this.engine;
-        }
-
-        public Account getAccount() {
-            return this.account;
-        }
-
-        public Server getServer() {
-            return this.server;
-        }
-
-        public SpamBot getSpamBot() {
-            return this.spamBot;
-        }
 
         public void run() {
             while (this.spamBot.isRunning()) {
@@ -149,6 +60,7 @@ public class SpamBot
                     } catch (ConnectException e) {
                         if (e.getFailureReason() == ConnectException.Cause.ACCOUNT_INVALID) {
                             System.out.println("Account invalid " + this.account.toString());
+                            invalidateThread(connection);
                             return;
                         }
                         e.printStackTrace();
@@ -169,7 +81,7 @@ public class SpamBot
                         }
                         try {
                             if (this.spamBot.shouldStartSpamming) {
-                                player.chat(this.spamBot.getMessage().replaceAll("%r", String.valueOf(this.spamBot.getRandom().nextInt(1000))));
+                                player.chat(this.spamBot.getMessage().replaceAll("%r", String.valueOf(ProjectBot.getRandom().nextInt(1000))));
                             }
                         } catch (IllegalStateException ex) {
                             ex.printStackTrace();
@@ -187,10 +99,20 @@ public class SpamBot
                 System.out.println("Trying to reconnect!");
             }
         }
+
+        public void invalidateThread(Connection connection) {
+            BotThread toRemove = null;
+            for (BotThread thread : SpamBot.this.getThreads()) {
+                if (thread.getAccount().equals(connection.getAccount())) {
+                    toRemove = thread;
+                }
+            }
+            if (toRemove == null) return;
+            SpamBot.this.getThreads().remove(toRemove);
+        }
     }
 
-    private static class Attachment
-            extends PlayerAttachment {
+    private static class Attachment extends PlayerAttachment {
         public void onPlayerDeath(Player player) {
             try {
                 Thread.sleep(60L);
@@ -201,10 +123,10 @@ public class SpamBot
         }
     }
 
-    String getMessage() {
-        String s = this.song[this.index];
+    private String getMessage() {
+        String s = this.lines[this.index];
         this.index += 1;
-        if (this.index == this.song.length) {
+        if (this.index == this.lines.length) {
             this.index = 0;
         }
         return s;
@@ -213,8 +135,8 @@ public class SpamBot
     public void run() {
         ProjectBot bot = new ProjectBot();
         Engine engine = bot.getEngineManager().getEngine();
-        this.threads = new ArrayList();
-        List<Account> accounts = new ArrayList();
+        this.threads = new ArrayList<>();
+        List<Account> accounts = new ArrayList<>();
         for (String s : alts.split("\n")) {
             String[] split = s.split(":");
             if (split.length != 2) {
@@ -223,7 +145,7 @@ public class SpamBot
                 accounts.add(engine.getAccount(split[0], split[1]));
             }
         }
-        Server server = engine.getServer(this.ip, Integer.valueOf(25565));
+        Server server = engine.getServer(this.ip, this.port);
         Collections.shuffle(accounts);
         for (Account account : accounts) {
             this.threads.add(new BotThread(engine, account, server, this));
@@ -238,18 +160,5 @@ public class SpamBot
                 e.printStackTrace();
             }
         }
-    }
-
-    private static String randomAlts(Integer amount) {
-        StringBuilder builder = new StringBuilder();
-        for (int x = 0; x < amount.intValue(); x++) {
-            builder.append(getRandomString(Integer.valueOf(5))).append(x == amount.intValue() - 1 ? "" : "\n");
-        }
-        System.out.println(builder.toString());
-        return builder.toString();
-    }
-
-    public static String getRandomString(Integer length) {
-        return Integer.toString(ProjectBot.getRandom().nextInt((int) Math.pow(10.0D, length.intValue())));
     }
 }
