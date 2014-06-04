@@ -2,6 +2,7 @@ package org.projectbot;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Synchronized;
 import org.projectbot.exception.ConnectException;
 import org.projectbot.inter.*;
 import org.projectbot.util.FileUtil;
@@ -132,6 +133,7 @@ public class SpamBot extends Thread {
         return s;
     }
 
+    @Synchronized
     public void run() {
         ProjectBot bot = new ProjectBot();
         Engine engine = bot.getEngineManager().getEngine();
