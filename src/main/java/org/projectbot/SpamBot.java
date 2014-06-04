@@ -101,6 +101,7 @@ public class SpamBot extends Thread {
             }
         }
 
+        @Synchronized
         public void invalidateThread(Connection connection) {
             BotThread toRemove = null;
             for (BotThread thread : SpamBot.this.getThreads()) {
