@@ -20,17 +20,27 @@ public final class ProjectBot {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) throws InterruptedException {
         /*
         Test implementation here.
          */
-        Test test = new Test(args[0]);
-        test.start();
+        int port = 25565;
+        if (args.length == 2) {
+            try {
+                port = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                port = 25565;
+            }
+        }
+        SpamBot spamBot = new SpamBot(args[0], port);
+        spamBot.start();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String s = scanner.nextLine();
-            if (s.equalsIgnoreCase("start")) test.setShouldStartSpamming(true);
-            if (s.equalsIgnoreCase("pause")) test.setShouldStartSpamming(false);
+            if (s.equalsIgnoreCase("start")) spamBot.setShouldStartSpamming(true);
+            if (s.equalsIgnoreCase("pause")) spamBot.setShouldStartSpamming(false);
+            if (s.equalsIgnoreCase("end")) System.exit(0);
         }
     }
 }

@@ -8,7 +8,7 @@ import org.projectbot.exception.ConnectException;
 import org.projectbot.inter.Connection;
 import org.projectbot.inter.Network;
 import org.projectbot.inter.Player;
-import org.spacehq.mc.auth.exceptions.AuthenticationException;
+import org.spacehq.mc.auth.exception.AuthenticationException;
 import org.spacehq.mc.protocol.MinecraftProtocol;
 import org.spacehq.packetlib.Client;
 import org.spacehq.packetlib.Session;
@@ -32,8 +32,11 @@ public final class MCPConnection implements Connection {
     @Override
     public Player connect() throws ConnectException {
         try {
-            if (!account.isOffline())protocol = new MinecraftProtocol(account.getLogin(), account.getPassword(), false);
-            else protocol = new MinecraftProtocol(account.getLogin());
+            if (!account.isOffline()) {
+                protocol = new MinecraftProtocol(account.getLogin(), account.getPassword(), false);
+            } else {
+                protocol = new MinecraftProtocol(account.getLogin());
+            }
         } catch (AuthenticationException e) {
             throw new ConnectException("Could not login with account provided!", ConnectException.Cause.ACCOUNT_INVALID);
         }

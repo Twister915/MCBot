@@ -11,6 +11,7 @@ import org.projectbot.inter.*;
 @Data
 public final class MCPEngine implements Engine {
     private final EngineMeta meta;
+
     @Override
     public Account getAccount(String username, String password) {
         return new MCPAccount(username, password, false);
@@ -37,6 +38,7 @@ public final class MCPEngine implements Engine {
 
     @Override
     public Network getNetwork() {
-        return new Network() {};
+        return new Network() {
+        };
     }
 }
