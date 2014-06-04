@@ -61,7 +61,6 @@ public class SpamBot extends Thread {
                     } catch (ConnectException e) {
                         if (e.getFailureReason() == ConnectException.Cause.ACCOUNT_INVALID) {
                             System.out.println("Account invalid " + this.account.toString());
-                            invalidateThread(connection);
                             return;
                         }
                         e.printStackTrace();
