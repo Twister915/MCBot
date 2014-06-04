@@ -51,6 +51,7 @@ public class SpamBot extends Thread {
         private final Account account;
         private final Server server;
         private final SpamBot spamBot;
+        private boolean valid = true;
 
         public void run() {
             while (this.spamBot.isRunning()) {
@@ -61,6 +62,7 @@ public class SpamBot extends Thread {
                     } catch (ConnectException e) {
                         if (e.getFailureReason() == ConnectException.Cause.ACCOUNT_INVALID) {
                             System.out.println("Account invalid " + this.account.toString());
+                            valid = false;
                             return;
                         }
                         e.printStackTrace();
@@ -154,6 +156,7 @@ public class SpamBot extends Thread {
         }
         this.running = true;
         for (BotThread thread : this.threads) {
+            if (!thread.isValid()) return;
             thread.start();
             System.out.println("At a total of " + (this.threads.indexOf(thread) + 1) + " account(s)!");
             try {
